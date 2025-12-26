@@ -90,7 +90,8 @@ class NaurkiScraper:
                         'experience': experience,
                         'post_date': post_date,
                         'skills': ", ".join(skills), 
-                        'url': url
+                        'url': url,
+                        'description': job.get('jobDescription')  # Added JD extraction
                     })
 
             return jobs_data
@@ -327,6 +328,9 @@ class HiristScraper:
 
                 url = job.get('jobDetailUrl')
 
+                # Generate description template as requested by user
+                description = f"{company} is actively seeking a qualified {title} to join our growing team. The ideal candidate requires {experience} of relevant industry experience. We are offering a competitive compensation package of {salary}. The primary technical requirements for this role include: {skills}."
+
                 jobs_data.append({
                     'job_id': job_id,
                     'title': title,
@@ -338,7 +342,8 @@ class HiristScraper:
                     'experience': experience,
                     'post_date': post_date,
                     'skills': skills,
-                    'url': url
+                    'url': url,
+                    'description': description
                 })
         return jobs_data
 
@@ -360,10 +365,10 @@ class HiristScraper:
                 
         return 132 
 
-    def scrape(self, query, location_str, min_exp=2, max_exp=3, page_count=1, size=20):
+    def scrape(self, query, location, min_exp=2, max_exp=3, page_count=1, size=20):
         loc_names = []
-        if location_str:
-            loc_names = [l.strip() for l in location_str.split(',') if l.strip()]
+        if location:
+            loc_names = [l.strip() for l in location.split(',') if l.strip()]
         
         if not loc_names:
             loc_names = [""]
@@ -403,7 +408,13 @@ class HiristScraper:
 
 if __name__ == "__main__":
 
-    scraper = HiristScraper()
-    jobs = scraper.scrape(query="Python Developer", location_str="Bangalore,Gurugram, Noida", min_exp=2, max_exp=5, page_count=2)
+    scraper = NaurkiScraper()
+    jobs = scraper.scrape(search_term="Python Developer", location="Bangalore,Gurugram, Noida",job_type="Full Time",experience=2, page_count=2)
     with open("scraped_data.json", "w") as f:
-        json.dump(jobs, f, indent=4)
+        json.dump(jobs, f, indent=4)    
+
+
+    hirist_scraper = HiristScraper()
+    jobs = hirist_scraper.scrape(query="Python Developer", location="Bangalore,Gurugram, Noida",min_exp=2, max_exp=3, page_count=2)
+    with open("scraped_data.json", "w") as f:
+        json.dump(jobs, f, indent=4)        
