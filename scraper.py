@@ -414,7 +414,7 @@ if __name__ == "__main__":
         json.dump(jobs, f, indent=4)    
 
 
-    hirist_scraper = HiristScraper()
-    jobs = hirist_scraper.scrape(query="Python Developer", location="Bangalore,Gurugram, Noida",min_exp=2, max_exp=3, page_count=2)
-    with open("scraped_data.json", "w") as f:
-        json.dump(jobs, f, indent=4)        
+    # hirist_scraper = HiristScraper()
+    # jobs = hirist_scraper.scrape(query="Python Developer", location="Bangalore,Gurugram, Noida",min_exp=2, max_exp=3, page_count=2)
+    # with open("scraped_data.json", "w") as f:
+    #     json.dump(jobs, f, indent=4)        

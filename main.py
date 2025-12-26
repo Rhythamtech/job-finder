@@ -1,4 +1,5 @@
 import os
+import json
 from uuid import uuid4
 from dotenv import load_dotenv
 from scraper import NaurkiScraper, HiristScraper
@@ -8,7 +9,7 @@ from langgraph.types import Send
 from langgraph.checkpoint.redis import RedisSaver  
 from langgraph.graph import StateGraph, END, START
 from langgraph.types import interrupt, Command
-from utils import parsed_user_data, llm_structure
+from utils import parsed_user_data, llm_structure, llm, convert_json_to_toon
 
 load_dotenv()
 
@@ -40,18 +41,31 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
 
     def prepare_scraping_query(state:AgentState):
         print("Preparing scraping query")
-        prompt = f"""Based on the share user requirements. Write search query which target all the user's job requirements correctly. 
+        prompt = f"""Based on the user requirements, create a simple and effective job search query. 
+                    
                     User requirements: {state.get("preference")}
                     
-                    note :
-                    - Use this to identify the job_type option only :"Work from office","Remote","Hybrid" 
+                    IMPORTANT INSTRUCTIONS:
+                    - The 'query' field should be SIMPLE - use only the job designation/title (e.g., "Software Engineer", "Python Developer")
+                    - DO NOT include all skills in the query - job search APIs work better with simple queries
+                    - The skills will be used for filtering results later, not for the initial search
+                    - Keep the query concise and focused on the job role
+                    
+                    In the response i need these fields only:
+                    - query (simple job title/designation only, e.g., "Software Engineer" or "Python Developer")
+                    - location (location of the job)
+                    - job_type (string value like "Work from office","Remote","Hybrid")
+                    - experience (must be an Integer str value)
+                    
+                    Note:
+                    - Use this to identify the job_type option only: "Work from office","Remote","Hybrid" 
     
                     - Response format must be JSON.
                     {{
-                        "query": "", (designation of the job which i want to apply for, simple and short)
+                        "query": "", 
                         "location": "", 
-                        "job_type": "", (string value)
-                        "experience": "" (must be an Integer str value, like '2')
+                        "job_type": "", 
+                        "experience": "" 
                     }}
                 """
         response = llm_structure(prompt)
@@ -72,21 +86,24 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
         job_type = q["job_type"]
         experience = q["experience"]
 
-        print("Searching Job for : ",query)
-
         if query is None or location is None or job_type is None or experience is None:
             raise Exception("Invalid scrape query")
         
         if query == "" or location == "" or job_type == "" or experience == "":
             raise Exception("Opps!! Invalid scrape query")
 
-        naukri_response = naukri_scrapper.scrape(location, query, job_type, experience, 2)
+        naukri_response = naukri_scrapper.scrape(location=location,
+                                                search_term=query,
+                                                job_type=job_type,
+                                                experience=experience,
+                                                page_count=4)
         hirist_response = hirist_scrapper.scrape(query=query,
                                             location=location,
                                             min_exp=experience,
                                             max_exp=int(experience)+2,
-                                            page_count=3)           
-        state["scraped_data"] = (naukri_response or []) + (hirist_response or [])
+                                            page_count=4)           
+        state["scraped_data"].extend(naukri_response)
+        state["scraped_data"].extend(hirist_response)
 
         return state
 
@@ -126,7 +143,6 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
 
     def evaluate_jobs(state : BatchState):
         print("Evaluating jobs")
-
         jobs = state.get("jobs", [])
         preference = state.get("preference", {})
         
@@ -140,7 +156,6 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
             "jobs": [
                 {{
                     "job_id": "",
-                    "description": "",
                     "score": 0 (score must be 0-10 scale)
                 }}
             ]
@@ -150,41 +165,40 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
         response = llm_structure(instruction)
         return {"evaluated_jobs": response["jobs"]}
         
-        
-        
-
     def format_job_data(state:AgentState):
         print("Formatting job data")
+        prompt = """ You are a frontend UI engineer.
+                Convert the given JSON array of job listings (same fields in each item) into ONE self-contained HTML file (HTML + CSS + JS in a single file).
+                Input data:
+                """
         jobs = state.get("scraped_data", [])
         evaluated_jobs = state.get("evaluated_jobs", [])
+        job_list = []
         
         if not jobs:
             state["result"] = "No jobs found matching your criteria."
             return state
-
-        formatted_res = f"Found {len(jobs)} jobs based on your requirements:\n\n"
 
         eval_lookup = {item["job_id"]: item for item in evaluated_jobs}
 
         for i, job in enumerate(jobs, 1):
             eval_data = eval_lookup.get(job.get("job_id"), {})
             score = eval_data.get("score", "N/A")
+        
             if score >=5 :
-                formatted_res += f"Job {i} (Score: {score}):\n"
-                formatted_res += f"Title: {job.get('title', 'N/A')}\n"
-                formatted_res += f"Company: {job.get('company', 'N/A')}\n"
-                formatted_res += f"Location: {job.get('location', 'N/A')}\n"
-                formatted_res += f"Experience: {job.get('experience', 'N/A')}\n"
-                formatted_res += f"Salary: {job.get('salary', 'N/A')}\n"
-                formatted_res += f"URL: {job.get('url', 'N/A')}\n"
-                formatted_res += "-" * 30 + "\n"
+                job_list.append(job.pop("description"))
 
-        state["result"] = formatted_res
+        response = llm(prompt+ convert_json_to_toon(job_list))
+        state["result"] = response.split("```html")[1].split("```")[0]
         return state
 
     def share_job_results_with_user(state:AgentState):
-        print("Sharing job results with user")
-        print(state.get("result"))
+        try:
+            with open("index.html", "w") as f:
+                f.write(state.get("result"))
+        except Exception as e:
+            print(f"Error writing to file: {e}")
+
         return state
 
     graph = StateGraph(AgentState)
@@ -207,9 +221,7 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
     graph.add_edge("format_job_data", "share_job_results_with_user")
     graph.add_edge("share_job_results_with_user", END)
 
-    builder  = graph.compile(checkpointer=checkpointer)
-    id = "thread012"
-    config = {"configurable": {"thread_id": id}}
+    builder  = graph.compile()
 
     response  = builder.invoke(
             AgentState(
@@ -220,7 +232,7 @@ with RedisSaver.from_conn_string(DB_URI) as checkpointer:
                     "skills": "Python, langchain, langgraph,FastAPI, GenAI, AI Agents",
                     "job_type": "Hybrid", 
                     "experience": "2"
-                }), config=config)
+                }))
 
     graph_png_bytes = builder.get_graph(xray=True).draw_mermaid_png()
     with open("graph_xray.png", "wb") as f:

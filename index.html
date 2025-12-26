@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Listings</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --radius: 0.75rem;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --shadow: 0 1px 3px rgb(0 0 0 / .06), 0 1px 2px rgb(0 0 0 / .04);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: var(--bg);
+      font-family: var(--font);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .grid {
+      display: grid;
+      gap: 1.25rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.25rem;
+      transition: box-shadow .15s ease;
+    }
+    .card:hover {
+      box-shadow: 0 4px 6px rgb(0 0 0 / .05), 0 2px 4px rgb(0 0 0 / .04);
+    }
+    .header {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      background: #e0e7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .company {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .meta span {
+      background: #f1f5f9;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.75rem 0 1rem;
+    }
+    .pill {
+      background: #e0f2fe;
+      color: #0c4a6e;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+    .desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      max-height: 3.6rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .desc.open {
+      max-height: none;
+    }
+    .desc-toggle {
+      appearance: none;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+    .date {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    .btn:hover {
+      background: #2563eb;
+    }
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Job Listings</h1>
+  <div class="grid" id="jobs"></div>
+
+  <script>
+    const data = [
+      {
+        "Required Skills": "1 2 years in AppDev or software engineering. Work on Agentic AI tools (LangChain,GitHub Copilot,Azure SRE agents)",
+        "Job Title": "Python Developer (AI Chatbot)",
+        "Location": "Gurugram",
+        "Experience": "Relevant experience in AI chatbot development",
+        "Salary": "5.5 Days working/Night shift. Both-sided cabs and meal available",
+        "Description": "<p>Locations - Indore / Noida / Bengaluru / Pune /Gurgaon</p><br /><p><strong>Job Description</strong></p><ul><li>2 to 5 years of hands-on experience as a <strong>Data Engineer</strong></li><li>Strong experience with <strong>Databricks</strong> and <strong>Apache Spark</strong></li><li>Proficiency in <strong>Python</strong> for data engineering and ETL development</li><li>Experience building and managing <strong>ETL pipelines</strong></li><li>Experience with cloud platforms (<strong>AWS / Azure / GCP</strong>) at least one</li><li>Familiarity with <strong>Delta Lake</strong> and optimized data storage formats</li><li>Understanding of <strong>Generative AI fundamentals</strong> (LLMs, embeddings, RAG concepts)</li></ul><br /><p><strong>Good to Have</strong></p><ul><li>Hands-on experience with <strong>GenAI frameworks</strong> (Lang Chain, Lang graph, etc.)</li><li>Experience working with <strong>vector databases</strong> (PGVector, Pinecone, Chroma, etc.)</li><li>Knowledge of <strong>data orchestration tools</strong> (Airflow, Databricks Workflows)</li></ul>",
+        "Company": "Confidential",
+        "Rating": null,
+        "Timestamp": Date.now() - 3 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job1"
+      },
+      {
+        "Required Skills": "Bachelors degree in Computer Science,Information Technology,or a related field",
+        "Job Title": "Software Developer",
+        "Location": "Faridabad",
+        "Experience": "2-6 Years",
+        "Salary": "Immediate to 15 Days",
+        "Description": "Job Summary. We are seeking a skilled and motivated Software Developer with 2 years of experience to design,develop,and maintain software applications for internal and external users",
+        "Company": "Confidential",
+        "Rating": null,
+        "Timestamp": Date.now() - 7 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job2"
+      },
+      {
+        "Required Skills": "Python, Django, Flask, Design Patterns",
+        "Job Title": "Senior Python Software Engineer",
+        "Location": "Remote",
+        "Experience": "2-5 Yrs",
+        "Salary": "12-15 LPA",
+        "Description": "Innefu Labs Pvt Ltd is actively seeking a qualified Innefu Labs - Senior Python Software Engineer - Django/Flask to join our growing team.",
+        "Company": "Innefu Labs Pvt Ltd",
+        "Rating": null,
+        "Timestamp": Date.now() - 1 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job3"
+      },
+      {
+        "Required Skills": "Full Stack, React.js, Python, Django, Flask, AWS, FastAPI, Javascript, RESTful API, PostgreSQL",
+        "Job Title": "Full Stack Engineer - Python/React.js",
+        "Location": "Remote",
+        "Experience": "2-8 Yrs",
+        "Salary": "10-24 LPA",
+        "Description": "HRABLE TECHNOLOGIES PRIVATE LIMITED is actively seeking a qualified Full Stack Engineer - Python/React.js to join our growing team.",
+        "Company": "HRABLE TECHNOLOGIES PRIVATE LIMITED",
+        "Rating": null,
+        "Timestamp": Date.now() - 5 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job4"
+      },
+      {
+        "Required Skills": "Python, Django, Flask, FastAPI, ORM, RESTful API",
+        "Job Title": "Software Engineer - Python Frameworks",
+        "Location": "Remote",
+        "Experience": "3-5 Yrs",
+        "Salary": "10-15 LPA",
+        "Description": "MAGIC BLOOMS MEDIA PRIVATE LIMITED is actively seeking a qualified Software Engineer - Python Frameworks to join our growing team.",
+        "Company": "MAGIC BLOOMS MEDIA PRIVATE LIMITED",
+        "Rating": null,
+        "Timestamp": Date.now() - 2 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job5"
+      },
+      {
+        "Required Skills": "Generative AI, LLM, API, Algorithm, Data Structure, REST API, SQL, NoSQL, AWS",
+        "Job Title": "Generative AI Software Engineer",
+        "Location": "Remote",
+        "Experience": "3-8 Yrs",
+        "Salary": "8-18 LPA",
+        "Description": "NEXTHIRE LLP is actively seeking a qualified Generative AI Software Engineer to join our growing team.",
+        "Company": "NEXTHIRE LLP",
+        "Rating": null,
+        "Timestamp": Date.now() - 4 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job6"
+      },
+      {
+        "Required Skills": "Full Stack, React.js, Python, Django, Flask, AWS, Javascript, RESTful API, PostgreSQL",
+        "Job Title": "Full Stack Engineer - Python/React.js",
+        "Location": "Remote",
+        "Experience": "3-6 Yrs",
+        "Salary": "12-18 LPA",
+        "Description": "HRABLE TECHNOLOGIES PRIVATE LIMITED is actively seeking a qualified Full Stack Engineer - Python/React.js to join our growing team.",
+        "Company": "HRABLE TECHNOLOGIES PRIVATE LIMITED",
+        "Rating": null,
+        "Timestamp": Date.now() - 6 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job7"
+      },
+      {
+        "Required Skills": "Artificial Intelligence, Machine Learning, LLM, LangChain, NLP, Python, Conversational AI",
+        "Job Title": "AI/ML Engineer",
+        "Location": "Remote",
+        "Experience": "4-7 Yrs",
+        "Salary": "15-20 LPA",
+        "Description": "HireVeda is actively seeking a qualified AI/ML Engineer to join our growing team.",
+        "Company": "HireVeda",
+        "Rating": null,
+        "Timestamp": Date.now() - 8 * 24 * 60 * 60 * 1000,
+        "URL": "https://example.com/job8"
+      }
+    ];
+
+    function timeAgo(ms) {
+      const d = new Date(ms);
+      const now = Date.now();
+      const diff = now - d;
+      const days = Math.round(diff / (1000 * 60 * 60 * 24));
+      if (days === 0) return 'Today';
+      return days === 1 ? '1 day ago' : `${days} days ago`;
+    }
+
+    function renderJobs() {
+      const container = document.getElementById('jobs');
+      data.forEach((j, idx) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const logo = j.Company.charAt(0).toUpperCase();
+
+        const skills = j["Required Skills"].split(',').map(s => s.trim()).slice(0, 5);
+
+        const descId = `desc-${idx}`;
+
+        card.innerHTML = `
+          <div>
+            <div class="header">
+              <div class="logo">${logo}</div>
+              <div>
+                <div class="title">${j["Job Title"]}</div>
+                <div class="company">${j.Company} ${j.Rating ? '★' + j.Rating : ''}</div>
+              </div>
+            </div>
+            <div class="meta">
+              <span>${j.Location}</span>
+              <span>${j.Experience}</span>
+              <span>${j.Salary}</span>
+            </div>
+            <div class="skills">
+              ${skills.map(s => `<span class="pill">${s}</span>`).join('')}
+            </div>
+            <div id="${descId}" class="desc">
+              ${j.Description}
+            </div>
+            <button class="desc-toggle" onclick="toggleDesc('${descId}', this)">Show more</button>
+          </div>
+          <div class="footer">
+            <span class="date">${timeAgo(j.Timestamp)}</span>
+            <button class="btn" onclick="window.open('${j.URL}', '_blank')">View Job</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleDesc(id, btn) {
+      const el = document.getElementById(id);
+      el.classList.toggle('open');
+      btn.textContent = el.classList.contains('open') ? 'Show less' : 'Show more';
+    }
+
+    renderJobs();
+  </script>
+</body>
+</html>
