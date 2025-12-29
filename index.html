@@ -2,570 +2,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Listings - AI & Python Developer Opportunities</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
-            color: #2c3e50;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #2c3e50;
-            padding: 40px 0;
-            text-align: center;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-        }
-
-        h1 {
-            font-size: 2.8em;
-            margin-bottom: 10px;
-            font-weight: 700;
-            color: #1a237e;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .subtitle {
-            font-size: 1.3em;
-            opacity: 0.85;
-            font-weight: 400;
-            color: #37474f;
-        }
-
-        .filters {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .filter-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #1a237e;
-        }
-
-        .filter-group input,
-        .filter-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 10px;
-            font-size: 15px;
-            background: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
-        }
-
-        .filter-group input:focus,
-        .filter-group select:focus {
-            outline: none;
-            border-color: #64b5f6;
-            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
-        }
-
-        .job-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-
-        .job-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 25px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .job-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        .job-header {
-            margin-bottom: 20px;
-        }
-
-        .company-name {
-            font-size: 14px;
-            color: #546e7a;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .job-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a237e;
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
-
-        .job-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .meta-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            color: #37474f;
-            background: rgba(236, 239, 241, 0.7);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        .meta-item::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #64b5f6;
-            border-radius: 50%;
-        }
-
-        .salary {
-            color: #00897b;
-            font-weight: 700;
-        }
-
-        .skills {
-            margin-bottom: 20px;
-        }
-
-        .skills-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #546e7a;
-            margin-bottom: 10px;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .skill-tag {
-            background: rgba(179, 229, 252, 0.7);
-            color: #01579b;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid rgba(2, 119, 189, 0.1);
-        }
-
-        .job-description {
-            font-size: 15px;
-            color: #455a64;
-            line-height: 1.7;
-            max-height: 100px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .job-description.expanded {
-            max-height: none;
-        }
-
-        .read-more {
-            color: #0288d1;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .read-more:hover {
-            color: #01579b;
-            gap: 6px;
-        }
-
-        .apply-btn {
-            background: linear-gradient(to right, #1e88e5, #0d47a1);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.2);
-        }
-
-        .apply-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.3);
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: #546e7a;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .no-results h3 {
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            color: #1a237e;
-        }
-
-        @media (max-width: 768px) {
-            .job-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .filters {
-                flex-direction: column;
-            }
-            
-            .filter-group {
-                width: 100%;
-            }
-
-            h1 {
-                font-size: 2.2em;
-            }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #546e7a;
-            font-size: 1.2em;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Job Spotlight</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f7fa;color:#111;}
+    .wrap{max-width:680px;margin:40px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+    .header{background:#0d6efd;color:#fff;padding:24px 32px;font-size:20px;font-weight:600;}
+    .job{padding:24px 32px;border-bottom:1px solid #e7e9ec;display:flex;gap:20px;align-items:flex-start;}
+    .job:last-child{border:none;}
+    .logo{width:56px;height:56px;object-fit:contain;border-radius:6px;}
+    .details{flex:1;}
+    .title{font-size:18px;font-weight:600;margin:0 0 4px;}
+    .company{font-size:15px;color:#555;margin:0 0 6px;}
+    .meta{font-size:13px;color:#777;margin-bottom:12px;}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+    .tag{background:#eef2ff;color:#0d6efd;font-size:11px;padding:4px 8px;border-radius:12px;}
+    .btn{display:inline-block;background:#0d6efd;color:#fff;text-decoration:none;padding:8px 18px;border-radius:4px;font-size:14px;font-weight:500;}
+    .footer{padding:24px 32px;text-align:center;font-size:12px;color:#999;}
+    @media(max-width:600px){
+      .wrap{margin:20px;}
+      .job{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>AI & Python Developer Jobs</h1>
-            <p class="subtitle">Discover your next opportunity in AI and Python development</p>
-        </header>
 
-        <div class="filters">
-            <div class="filter-group">
-                <label for="search">Search Jobs</label>
-                <input type="text" id="search" placeholder="Search by title, skills, or company...">
-            </div>
-            <div class="filter-group">
-                <label for="experience">Experience Level</label>
-                <select id="experience">
-                    <option value="">All Levels</option>
-                    <option value="0-2">0-2 years</option>
-                    <option value="2-5">2-5 years</option>
-                    <option value="5-8">5-8 years</option>
-                    <option value="8+">8+ years</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="location">Location</label>
-                <select id="location">
-                    <option value="">All Locations</option>
-                    <option value="gurgaon">Gurgaon</option>
-                    <option value="bengaluru">Bengaluru</option>
-                    <option value="pune">Pune</option>
-                    <option value="noida">Noida</option>
-                    <option value="indore">Indore</option>
-                </select>
-            </div>
-        </div>
+<div class="wrap">
+  <div class="header">Latest Python / Backend Openings</div>
 
-        <div id="job-container" class="job-grid">
-            <div class="loading">Loading job listings...</div>
-        </div>
-    </div>
+  <div id="jobs"></div>
 
-    <script>
-        // Job data
-        const jobListings = [
-            {
-                id: 1,
-                company: "Tech Solutions Inc",
-                title: "Python Developer - AI/ML",
-                experience: "2-5 years",
-                location: "Gurgaon",
-                salary: "8-15 LPA",
-                skills: ["Python", "AI/ML", "LangChain", "NLP", "LLM"],
-                description: "Required Skills: 1-2 years in AppDev or software engineering. Work on Agentic AI tools (LangChain, GitHub Copilot, Azure SRE agents). Looking for candidates with strong Python background and interest in AI development.",
-                type: "Full-time"
-            },
-            {
-                id: 2,
-                company: "DataTech Corp",
-                title: "Data Engineer",
-                experience: "2-5 years",
-                location: "Bengaluru",
-                salary: "10-18 LPA",
-                skills: ["Python", "Databricks", "Apache Spark", "ETL", "AWS/Azure/GCP"],
-                description: "Locations - Indore / Noida / Bengaluru / Pune / Gurgaon. 2 to 5 years of hands-on experience as a Data Engineer. Strong experience with Databricks and Apache Spark. Proficiency in Python for data engineering and ETL development. Experience building and managing ETL pipelines. Experience with cloud platforms (AWS / Azure / GCP) at least one. Familiarity with Delta Lake and optimized data storage formats. Understanding of Generative AI fundamentals (LLMs, embeddings, RAG concepts).",
-                type: "Full-time"
-            },
-            {
-                id: 3,
-                company: "AI Innovations",
-                title: "Python Coder Developer (AI/Chatbot)",
-                experience: "2 years",
-                location: "Gurgaon",
-                salary: "8 LPA",
-                skills: ["Python", "AI Chatbot", "AI Solutions"],
-                description: "Hiring For Python Coders Developer (AI/Chatbot). Experience in AI Chatbot Development & Implementation. 2 Years Experience Where AI Solution. 5.5 days Working. Drop Your CV at 7011890554.",
-                type: "Full-time"
-            },
-            {
-                id: 4,
-                company: "Innefu Labs Pvt Ltd",
-                title: "Senior Python Software Engineer",
-                experience: "2-5 years",
-                location: "Noida",
-                salary: "12-15 LPA",
-                skills: ["Python", "Django", "Flask", "Design Patterns"],
-                description: "Innefu Labs Pvt Ltd is actively seeking a qualified Senior Python Software Engineer - Django/Flask to join our growing team. The ideal candidate requires 2-5 Yrs of relevant industry experience. We are offering a competitive compensation package of 12-15 LPA.",
-                type: "Full-time"
-            },
-            {
-                id: 5,
-                company: "HRABLE Technologies",
-                title: "Full Stack Engineer - Python/React.js",
-                experience: "2-8 years",
-                location: "Pune",
-                salary: "10-24 LPA",
-                skills: ["Full Stack", "React.js", "Python", "Django", "Flask", "AWS", "FastAPI"],
-                description: "HRABLE TECHNOLOGIES PRIVATE LIMITED is actively seeking a qualified Full Stack Engineer - Python/React.js to join our growing team. The ideal candidate requires 2-8 Yrs of relevant industry experience. We are offering a competitive compensation package of 10-24 LPA.",
-                type: "Full-time"
-            },
-            {
-                id: 6,
-                company: "Magic Blooms Media",
-                title: "Software Engineer - Python Frameworks",
-                experience: "3-5 years",
-                location: "Bengaluru",
-                salary: "10-15 LPA",
-                skills: ["Python", "Django", "Flask", "FastAPI", "ORM", "RESTful API"],
-                description: "MAGIC BLOOMS MEDIA PRIVATE LIMITED is actively seeking a qualified Software Engineer - Python Frameworks to join our growing team. The ideal candidate requires 3-5 Yrs of relevant industry experience. We are offering a competitive compensation package of 10-15 LPA.",
-                type: "Full-time"
-            },
-            {
-                id: 7,
-                company: "NEXTHIRE LLP",
-                title: "Generative AI Software Engineer",
-                experience: "3-8 years",
-                location: "Pune",
-                salary: "8-18 LPA",
-                skills: ["Generative AI", "LLM", "API", "Algorithm", "Data Structure", "AWS"],
-                description: "NEXTHIRE LLP is actively seeking a qualified Generative AI Software Engineer to join our growing team. The ideal candidate requires 3-8 Yrs of relevant industry experience. We are offering a competitive compensation package of 8-18 LPA.",
-                type: "Full-time"
-            },
-            {
-                id: 8,
-                company: "HRABLE Technologies",
-                title: "Senior Full Stack Engineer - Python/React.js",
-                experience: "3-6 years",
-                location: "Gurgaon",
-                salary: "12-18 LPA",
-                skills: ["Full Stack", "React.js", "Python", "Django", "AWS", "PostgreSQL"],
-                description: "HRABLE TECHNOLOGIES PRIVATE LIMITED is actively seeking a qualified Full Stack Engineer - Python/React.js to join our growing team. The ideal candidate requires 3-6 Yrs of relevant industry experience. We are offering a competitive compensation package of 12-18 LPA.",
-                type: "Full-time"
-            },
-            {
-                id: 9,
-                company: "HireVeda",
-                title: "AI/ML Engineer",
-                experience: "4-7 years",
-                location: "Bengaluru",
-                salary: "15-20 LPA",
-                skills: ["AI", "Machine Learning", "LLM", "LangChain", "NLP", "Conversational AI"],
-                description: "HireVeda is actively seeking a qualified AI/ML Engineer to join our growing team. The ideal candidate requires 4-7 Yrs of relevant industry experience. We are offering a competitive compensation package of 15-20 LPA.",
-                type: "Full-time"
-            }
-        ];
+  <div class="footer">You received this because you subscribed to job alerts.</div>
+</div>
 
-        // State management
-        let filteredJobs = [...jobListings];
-        let searchTerm = '';
-        let experienceFilter = '';
-        let locationFilter = '';
+<script>
+  const jobs = [
+  {
+    "job_id": 291225013939,
+    "title": "Back End Developer",
+    "company": "Stride Fund Advisors Llp",
+    "logo_path": "https://img.naukimg.com/logo_images/groups/v1/11445092.gif",
+    "rating": null,
+    "location": "Delhi NCR, Delhi, Gurgaon",
+    "salary": "Not disclosed",
+    "experience": "1-4 Yrs",
+    "post_date": 1766999691792,
+    "skills": "Development, Backend Development, Python, Backend, End, AWS, Golang",
+    "url": "https://www.naukri.com/job-listings-back-end-developer-stride-fund-advisors-llp-new-delhi-gurugram-delhi-ncr-1-to-4-years-291225013939",
+    "description": "BE / BTech/MTech in Computer Science or related field from a Tier I / II institute<br><br>Proficiency in Python (Django / FastAPI/Flask) and Go (Golang) for API and backend module development<br><br>Experience with CI / CD automation and testing frameworks (GitLab CI,Jenkins,or GitHub Actions)<br><br>2 4 years of proven backend development experience,preferably in BFSI,fintech,or lending platforms"
+  },
+  {
+    "job_id": 291225008100,
+    "title": "Senior Software Engineer - ML/AI/LLM",
+    "company": "Info Edge",
+    "logo_path": "https://img.naukimg.com/logo_images/groups/v1/124792.gif",
+    "rating": 4,
+    "location": "Noida",
+    "salary": "Not disclosed",
+    "experience": "1-3 Yrs",
+    "post_date": 1766989023558,
+    "skills": "microsoft azure, pytorch, artificial intelligence, python, languages, hadoop, tensorflow, programming, aws, machine learning algorithms, gcp, scikit-learn, algorithms, c++, nltk, java, Data, machine learning, statistics, spacy, spark, data structures, communication skills",
+    "url": "https://www.naukri.com/job-listings-senior-software-engineer-ml-ai-llm-info-edge-india-ltd-noida-1-to-3-years-291225008100",
+    "description": "Apart from technical skills,the candidate should demonstrate strong problem-solving abilities and be capable of collaborating with cross-functional teams to deliver innovative solutions.  <br><br>Skills and Tools Required: - Proficiency in programming languages such as Python,Java,or C++<br><br> Work on Natural Language Processing tasks to enhance user experience and engagement"
+  },
+  {
+    "job_id": 1587466,
+    "title": "ZFW Dark Stores - Software Engineer - Backend Technologies",
+    "company": "Zippee",
+    "logo_path": "https://s3.ap-south-1.amazonaws.com/recruiter-static-content/CompanyLogos/centralised-41643.jpg",
+    "rating": 3.8,
+    "location": "Gurgaon/Gurugram",
+    "salary": "9-10 LPA",
+    "experience": "1-2 Yrs",
+    "post_date": 1765360077679,
+    "skills": "Backend Architecture, SaaS, RESTful API, Python, Django, AWS, Git, RDBMS, MySQL",
+    "url": "https://www.hirist.tech/j/zfw-dark-stores-software-engineer-backend-technologies-1587466",
+    "description": "Zippee is actively seeking a qualified ZFW Dark Stores - Software Engineer - Backend Technologies to join our growing team. The ideal candidate requires 1-2 Yrs of relevant industry experience. We are offering a competitive compensation package of 9-10 LPA. The primary technical requirements for this role include: Backend Architecture, SaaS, RESTful API, Python, Django, AWS, Git, RDBMS, MySQL."
+  },
+  {
+    "job_id": 291225016206,
+    "title": "Python Developer",
+    "company": "Amosta",
+    "logo_path": "https://img.naukimg.com/logo_images/groups/v1/4576423.gif",
+    "rating": 3.5,
+    "location": "Gurgaon",
+    "salary": "8-15 Lacs PA",
+    "experience": "2-5 Yrs",
+    "post_date": 1767004014503,
+    "skills": "API, Fast Api, Development, Python, Postgresql, MongoDB, Python Development",
+    "url": "https://www.naukri.com/job-listings-python-developer-amosta-gurugram-2-to-5-years-291225016206",
+    "description": "Dear Candidate,<br>Greetings!<br><br>Immediate Hiring For Python Developer - Gurgaon(WFO)<br><br>Requirements<br>1 Must have 2y exp in Python & Fastapi<br>2 Good to have Mongodb & Postgresql<br>3 Ready for F2F interview in 2nd round<br>4 Immediate joiner/10-15 days notice only"
+  },
+  {
+    "job_id": 291225500335,
+    "title": "Backend Developer",
+    "company": "Zucol Services",
+    "logo_path": "https://img.naukimg.com/logo_images/groups/v1/4775721.gif",
+    "rating": 3.5,
+    "location": "Gurgaon",
+    "salary": "Not disclosed",
+    "experience": "2-7 Yrs",
+    "post_date": 1766992805000,
+    "skills": "MySQL, Development, Python, Version control, Backend Development, Automation, GCP, Backend, Postgresql, CSR, GIT, System design",
+    "url": "https://www.naukri.com/job-listings-backend-developer-zucol-pvt-ltd-gurugram-2-to-7-years-291225500335",
+    "description": "We are looking for a skilled Backend Developer with strong experience in Python to design,develop,and maintain scalable backend systems<br><br>Required Skills and Qualifications . Strong proficiency in Python . <br><br>Preferred Qualifications ."
+  },
+  {
+    "job_id": 1586453,
+    "title": "Attentive AI - Software Engineer - Python",
+    "company": "Attentive.ai",
+    "logo_path": "https://s3.ap-south-1.amazonaws.com/recruiter-static-content/CompanyLogos/centralised-24073.jfif",
+    "rating": 3.8,
+    "location": "Noida",
+    "salary": "12-15 LPA",
+    "experience": "2-5 Yrs",
+    "post_date": 1765256015507,
+    "skills": "Python, Django, SQL, RESTful API, Design Patterns, Backend Architecture, Microservices Architecture",
+    "url": "https://www.hirist.tech/j/attentive-ai-software-engineer-python-1586453",
+    "description": "Attentive.ai is actively seeking a qualified Attentive AI - Software Engineer - Python to join our growing team. The ideal candidate requires 2-5 Yrs of relevant industry experience. We are offering a competitive compensation package of 12-15 LPA. The primary technical requirements for this role include: Python, Django, SQL, RESTful API, Design Patterns, Backend Architecture, Microservices Architecture."
+  },
+  {
+    "job_id": 1592636,
+    "title": "Nippon Data - R&D Software Engineer - Python Development",
+    "company": "Nippon data systems limited",
+    "logo_path": "https://recruiter-static-content.s3.ap-south-1.amazonaws.com/CompanyLogos/centralised-12465.webp",
+    "rating": 3.8,
+    "location": "Gurgaon/Gurugram",
+    "salary": "15-25 LPA",
+    "experience": "3-8 Yrs",
+    "post_date": 1766142093896,
+    "skills": "R&D, Python, RESTful API, Microservices Architecture, OOPS, Multithreading, Data Structure, Algorithm, Backend Architecture, FastAPI",
+    "url": "https://www.hirist.tech/j/nippon-data-rd-software-engineer-python-development-1592636",
+    "description": "Nippon data systems limited is actively seeking a qualified Nippon Data - R&D Software Engineer - Python Development to join our growing team. The ideal candidate requires 3-8 Yrs of relevant industry experience. We are offering a competitive compensation package of 15-25 LPA. The primary technical requirements for this role include: R&D, Python, RESTful API, Microservices Architecture, OOPS, Multithreading, Data Structure, Algorithm, Backend Architecture, FastAPI."
+  },
+  {
+    "job_id": 1587467,
+    "title": "Globiva - Software Engineer - Artificial Intelligence",
+    "company": "GLOBIVA",
+    "logo_path": "https://s3.ap-south-1.amazonaws.com/recruiter-static-content/CompanyLogos/centralised-43549.png",
+    "rating": 3.8,
+    "location": "Gurgaon/Gurugram",
+    "salary": "12-18 LPA",
+    "experience": "3-6 Yrs",
+    "post_date": 1765360106901,
+    "skills": "Node.js, MySQL, MongoDB, Artificial Intelligence, Machine Learning, NLP, Generative AI, LLM, Python, PyTorch",
+    "url": "https://www.hirist.tech/j/globiva-software-engineer-artificial-intelligence-1587467",
+    "description": "GLOBIVA is actively seeking a qualified Globiva - Software Engineer - Artificial Intelligence to join our growing team. The ideal candidate requires 3-6 Yrs of relevant industry experience. We are offering a competitive compensation package of 12-18 LPA. The primary technical requirements for this role include: Node.js, MySQL, MongoDB, Artificial Intelligence, Machine Learning, NLP, Generative AI, LLM, Python, PyTorch."
+  },
+  {
+    "job_id": 1589045,
+    "title": "Datacultr - Senior Software Engineer - Python Programming",
+    "company": "Datacultr",
+    "logo_path": "https://recruiter-static-content.s3.ap-south-1.amazonaws.com/CompanyLogos/centralised-30699.jpg",
+    "rating": 3.8,
+    "location": "Gurgaon/Gurugram",
+    "salary": "15-25 LPA",
+    "experience": "4-8 Yrs",
+    "post_date": 1765539381322,
+    "skills": "Python, Django, FastAPI, Backend Architecture, Server Side Component, PostgreSQL, RESTful API, REST API, Microservices Architecture",
+    "url": "https://www.hirist.tech/j/datacultr-senior-software-engineer-python-programming-1589045",
+    "description": "Datacultr is actively seeking a qualified Datacultr - Senior Software Engineer - Python Programming to join our growing team. The ideal candidate requires 4-8 Yrs of relevant industry experience. We are offering a competitive compensation package of 15-25 LPA. The primary technical requirements for this role include: Python, Django, FastAPI, Backend Architecture, Server Side Component, PostgreSQL, RESTful API, REST API, Microservices Architecture."
+  }
+];
 
-        // DOM elements
-        const jobContainer = document.getElementById('job-container');
-        const searchInput = document.getElementById('search');
-        const experienceSelect = document.getElementById('experience');
-        const locationSelect = document.getElementById('location');
+  const container = document.getElementById('jobs');
+  jobs.forEach(j=>{
+    const card = document.createElement('div');
+    card.className = 'job';
+    card.innerHTML = `
+      <img class="logo" src="${j.logo_path}" alt="">
+      <div class="details">
+        <h3 class="title">${j.title}</h3>
+        <div class="company">${j.company} ${j.rating ? '⭐'+j.rating : ''}</div>
+        <div class="meta">${j.location} · ${j.experience} · ${j.salary}</div>
+        <div class="tags">${j.skills.split(',').slice(0,5).map(s=>`<span class="tag">${s.trim()}</span>`).join('')}</div>
+        <a class="btn" href="${j.url}" target="_blank">Explore</a>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+</script>
 
-        // Render jobs
-        function renderJobs() {
-            if (filteredJobs.length === 0) {
-                jobContainer.innerHTML = `
-                    <div class="no-results">
-                        <h3>No jobs found</h3>
-                        <p>Try adjusting your search criteria</p>
-                    </div>
-                `;
-                return;
-            }
-
-            jobContainer.innerHTML = filteredJobs.map(job => `
-                <div class="job-card fade-in">
-                    <div class="job-header">
-                        <div class="company-name">${job.company}</div>
-                        <h3 class="job-title">${job.title}</h3>
-                    </div>
-                    
-                    <div class="job-meta">
-                        <span class="meta-item">📍 ${job.location}</span>
-                        <span class="meta-item">💼 ${job.experience}</span>
-                        <span class="meta-item salary">💰 ${job.salary}</span>
-                        <span class="meta-item">🕐 ${job.type}</span>
-                    </div>
-                    
-                    <div class="skills">
-                        <div class="skills-title">Required Skills:</div>
-                        <div class="skill-tags">
-                            ${job.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="job-description" id="desc-${job.id}">
-                        ${job.description}
-                    </div>
-                    <span class="read-more" onclick="toggleDescription(${job.id})">Read more</span>
-                    
-                    <button class="apply-btn" onclick="applyJob(${job.id})">Apply Now</button>
-                </div>
-            `).join('');
-        }
-
-        // Toggle description expansion
-        function toggleDescription(jobId) {
-            const desc = document.getElementById(`desc-${jobId}`);
-            const readMore = desc.nextElementSibling;
-            
-            if (desc.classList.contains('expanded')) {
-                desc.classList.remove('expanded');
-                readMore.textContent = 'Read more';
-            } else {
-                desc.classList.add('expanded');
-                readMore.textContent = 'Read less';
-            }
-        }
-
-        // Apply for job
-        function applyJob(jobId) {
-            const job = jobListings.find(j => j.id === jobId);
-            alert(`Application submitted for ${job.title} at ${job.company}! Our team will contact you soon.`);
-        }
-
-        // Filter jobs
-        function filterJobs() {
-            filteredJobs = jobListings.filter(job => {
-                const matchesSearch = !searchTerm || 
-                    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
-                
-                const matchesExperience = !experienceFilter || 
-                    (experienceFilter === '0-2' && job.experience.includes('2')) ||
-                    (experienceFilter === '2-5' && job.experience.includes('2-5')) ||
-                    (experienceFilter === '5-8' && job.experience.includes('5')) ||
-                    (experienceFilter === '8+' && job.experience.includes('8'));
-                
-                const matchesLocation = !locationFilter || 
-                    job.location.toLowerCase().includes(locationFilter.toLowerCase());
-                
-                return matchesSearch && matchesExperience && matchesLocation;
-            });
-            
-            renderJobs();
-        }
-
-        // Event listeners
-        searchInput.addEventListener('input', (e) => {
-            searchTerm = e.target.value;
-            filterJobs();
-        });
-
-        experienceSelect.addEventListener('change', (e) => {
-            experienceFilter = e.target.value;
-            filterJobs();
-        });
-
-        locationSelect.addEventListener('change', (e) => {
-            locationFilter = e.target.value;
-            filterJobs();
-        });
-
-        // Initial render
-        setTimeout(() => {
-            renderJobs();
-        }, 500);
-    </script>
 </body>
 </html>

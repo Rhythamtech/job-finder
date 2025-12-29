@@ -154,7 +154,7 @@ def evaluate_jobs(state : BatchState):
 def format_job_data(state:AgentState):
     print("Formatting job data")
     prompt = """ You are a frontend UI engineer.
-            Convert the given JSON array of job listings (same fields in each item) into ONE self-contained HTML file (HTML + CSS + JS in a single file) with CTA buttons.
+            Convert the given JSON array of job listings (same fields in each item) into ONE Simple Minimalistic HTML Email (HTML + CSS + JS in a single file) with Explore ("url") buttons.
             Input data:
             """
     jobs = state.get("scraped_data", [])
@@ -170,7 +170,7 @@ def format_job_data(state:AgentState):
         score = eval_data.get("score", "N/A")
     
         if score >=5 :
-            job_list.append(job.pop("description"))
+            job_list.append(job)
     response = llm(prompt+ convert_json_to_toon(job_list))
     state["result"] = response.split("```html")[1].split("```")[0]
     return state
